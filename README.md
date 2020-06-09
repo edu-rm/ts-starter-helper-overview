@@ -1,6 +1,8 @@
 # Rocketseat: MasterClass-07 TypeScript, o início, de forma prática
-
+[Vídeo](https://www.youtube.com/watch?v=0mYq5LrQN1s)
 ## Anotações
+
+Esse repositório é composto pela aplicação criada no MasterClass 07 da rocketseat, além de anotações úteis sintetizadas e descomplicadas, que facilitam a revisão para a absorção integral do conhecimento.
 
 ### Introdução
 
