@@ -133,3 +133,26 @@ Sucrase? É uma ótima alternativa, porém não entende uma das funcionalidades 
 - respawn: reinicia a cada alteração.
 
 **npm run dev:server | yarn dev:server**
+
+### TypeScript da forma prática
+
+**Toda váriavel criada com TS precisa ter um tipo específico?** 
+
+Sim.
+
+**Eu preciso informar o tipo toda vez?**
+
+- **Inferência de tipos**: capacidade do TS determinar de forma automática o tipo variáveis e retorno de funções.
+
+**Todas as vezes que eu utilizar funcionalidades de uma determinada biblioteca em um arquivo separado:**: Vou precisar importar os types dessa biblioteca, mais precisamente os tipos que correspondem com o que eu estou usando dela nesse arquivo.
+
+Exemplo:
+
+UserController -> método index.
+
+`export default {`
+    `async index(req,res){`
+        `return res.json(users);`
+    `}`
+`};`
+
