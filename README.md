@@ -150,9 +150,11 @@ Exemplo:
 
 UserController -> método index.
 
-`export default {`
-    `async index(req,res){`
-        `return res.json(users);`
-    `}`
-`};`
+```ts
+export default {
+    async index(req,res){
+        return res.json(users);
+    }
+};
+```
 
