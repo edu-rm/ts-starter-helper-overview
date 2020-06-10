@@ -129,7 +129,7 @@ Sucrase? É uma ótima alternativa, porém não entende uma das funcionalidades 
     "dev:server": "ts-node-dev --respawn --transpileOnly src/index.ts"
 },
 
-transpileOnly: não procura por erros no código TS, ela faz com que o ts-node-dev apenas transpile.
-respawn: reinicia a cada alteração.
+- transpileOnly: não procura por erros no código TS, ela faz com que o ts-node-dev apenas transpile.
+- respawn: reinicia a cada alteração.
 
 **npm run dev:server | yarn dev:server**
