@@ -108,9 +108,10 @@ Com esse comando ele já gera automaticamente o arquivo index.js e com nenhum ti
 
 Sugestões:
 
+```json
 "outDir": "./dist",
 "outDir": "./build",
-
+```
 ### Compilação em tempo real
 
 Existem muitas maneiras, no Node padrão a gente usa o Nodemon
@@ -148,7 +149,7 @@ Sim.
 
 - **Inferência de tipos**: capacidade do TS determinar de forma automática o tipo variáveis e retorno de funções.
 
-**Todas as vezes que eu utilizar funcionalidades de uma determinada biblioteca em um arquivo separado:**: Vou precisar importar os types dessa biblioteca, mais precisamente os tipos que correspondem com o que eu estou usando dela nesse arquivo.
+**Todas as vezes que eu utilizar funcionalidades de uma determinada biblioteca em um arquivo separado:**: Vou precisar importar os types dessa biblioteca, mais precisamente os tipos que correspondem com o que eu estou usando dela.
 
 Exemplo:
 
@@ -173,5 +174,76 @@ export default {
 };
 ```
 Feito isso você terá acesso a todas as funções e variáveis do Request e Response no seu IntelliSense
+
+### Definido tipos
+
+Supondo que precisamos enviar um email, função:
+
+```ts
+class EmailService {
+    sendMail(to, message){
+        console.log('Email enviado');
+    }
+}
+```
+
+**to**: será um objeto que tem "nome" e "email"
+    - **Para objetos**: utilizamos uma Interface. Ela serve para criar uma estrutura de subtipos.
+
+```ts
+interface IMailTo {
+    name: string;
+    email: string;
+}
+
+class EmailService {
+    sendMail(to : IMailTo, message){
+        console.log('Email enviado');
+    }
+}
+```
+
+**message**: um objeto que possui "subject", "body" e "attachment".
+    - **Attachment**: será opcional, então é colocado um **?**, e além disso será um array, pois pode haver vários anexos:
+
+```ts
+interface IMailMessage {
+    subject: string;
+    body: string;
+    attachement? : Array<string>; || attachement? : string[];
+}
+
+class EmailService {
+    sendMail(to : IMailTo, message : IMailMessage){
+        console.log('Email enviado');
+    }
+}
+```
+
+Quando o tipo é um array é possível escrever das duas formas: 
+    - ```ts attachement? : Array<string>; ```
+    - ```ts attachement? : string[]; ```
+
+**Utilizando a classe EmailService em um controller qualquer:**
+
+```ts
+import { Request, Response} from 'express';
+import EmailService from '../services/EmailService';
+
+export default {
+    async create(req: Request, res: Response){
+        
+        // Instanciando um objeto da classe EmailService
+        const emailService = new EmailService();
+
+        // Chamando o método sendMail criado na classe.
+        emailService.sendMail(
+            { name:'Eduardo', email: 'edu@edu.com' },
+            { subject: 'Seja Bem Vindo!', body: 'Bem vindo ao sistema'}
+        );
+        return res.json({ msg: 'Usuário criado'});
+    }
+}
+```
 
 
