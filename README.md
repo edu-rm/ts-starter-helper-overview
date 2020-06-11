@@ -1,4 +1,6 @@
 # Rocketseat: MasterClass-07 TypeScript, o início, de forma prática
+![TS](https://i1.wp.com/storage.googleapis.com/blog-images-backup/1*D8Wwwce8wS3auLAiM3BQKA.jpeg)
+
 [Link do vídeo](https://www.youtube.com/watch?v=0mYq5LrQN1s)
 ## Anotações
 
@@ -125,9 +127,11 @@ Sucrase? É uma ótima alternativa, porém não entende uma das funcionalidades 
 
 **packet.json:**
 
+```json
 "scripts": {
     "dev:server": "ts-node-dev --respawn --transpileOnly src/index.ts"
 },
+```
 
 - transpileOnly: não procura por erros no código TS, ela faz com que o ts-node-dev apenas transpile.
 - respawn: reinicia a cada alteração.
@@ -157,4 +161,17 @@ export default {
     }
 };
 ```
+Sabemos que o ```req``` e o ```res``` são duas variáveis que possuem um tipo específico dentro da biblioteca do express. Por isso precisamos importar e atribuir a tipagem a elas.
+
+```ts
+import { Request, Response} from 'express';
+
+export default {
+    async index(req : Request, res: Response){
+        return res.json(users);
+    }
+};
+```
+Feito isso você terá acesso a todas as funções e variáveis do Request e Response no seu IntelliSense
+
 
