@@ -356,3 +356,201 @@ class EmailService implements IEmailService {
 Há dois tipos de extensões: ts e tsx
 - ts : arquivos que não utilizam sinaxe XML.
 - tsx : componente react, arquivos que utilizam sintaxe XML.
+
+### TypeScript e Axios.
+
+Não é necessário baixar o @types do axios pois já vem junto com ele.
+
+**services/api.ts**
+
+```ts
+import axios from 'axios';
+
+const api = axios.create({
+    baseURL: 'http://localhost:3333',
+});
+
+export default api;
+```
+
+**App.tsx**
+
+```ts
+import React, { useEffect, useState } from 'react';
+
+import api from './services/api';
+
+function App() {
+
+  const [users, setUsers] = useState([]);
+
+  useEffect(() =>{
+    api.get('/users').then((response) => {
+      setUsers(response.data);
+    });
+  },[]);
+
+
+  return (
+    <div>
+      { users.map(user => <p>{user.name}</p>) } // erro
+    </div>
+  );
+}
+
+export default App;
+```
+
+Será apontado um erro no código acima: ```<p>{user.name}</p>```, pois:
+
+Quando é feita uma requisição GET na rota /users o retorno dela será um **Array** de objetos que contém **nome** e **email**, veja abaixo:
+
+```json
+[
+    {
+        "name":"Eduardo",
+        "email":"erm@erm.com"
+    }
+]
+```
+
+Quando a requisição na api é feita e ocorre o retorno dos dados, necessita-se dizer pro axios qual é o formato desse retorno, da resposta. E parra isso podemos criar uma interface.
+
+```ts 
+interface IUser {
+  name: string;
+  email: string;
+}
+```
+
+A interface acima representa exatamente como/a forma que **UM** dado da requisição se apresentará.
+Como usá-la:
+
+```ts 
+api.get<IUser[]>('/users').then((response) => {
+    setUsers(response.data); // erro
+});
+```
+
+Passamos ela após a chamada do método get, e além disso colocamos **[]** pra indicar que a resposta será um array. Pois como foi dito: a interface criada representa **um** único dado que virá da resposta, mas sabemos que a resposta será um array com vários deles.
+
+Ótimo, mas mesmo assim um erro será mostrado na `setUsers(response.data)`. Isso acontece pois o useState foi setado como um array normal, e sabemos que além de ser um array ele vai possuir objetos com nome e email (idêntico ao conteúdo da resposta da api, afinal é ele quem vai salva-lo)
+
+```ts
+//
+import React, { useEffect, useState } from 'react';
+
+import api from './services/api';
+
+interface IUser {
+  name: string;
+  email: string;
+}
+
+function App() {
+  
+  // Leitura: os users serão um array de IUser, e um único IUser será composto por nome e email.
+  const [users, setUsers] = useState<IUser[]>([]);
+
+  useEffect(() =>{
+    api.get<IUser[]>('/users').then((response) => {
+      setUsers(response.data);
+    });
+  },[]);
+
+
+  return (
+    <div>
+      { users.map(user => <p>{user.name}</p>) }
+    </div>
+  );
+}
+
+export default App;
+```
+
+### TypeScript e Componentização.
+
+Criando um componente que exibirá o nome e email :
+
+**components/User.tsx**
+
+```ts
+import React from 'react';
+
+const User = ({ user }) => { //erro
+
+  return (
+    <div>
+        <strong>Nome: </strong>{ user.name }<br />
+        <strong>Email: </strong>{ user.email }<br /><br />
+    </div>
+  );
+}
+
+export default User;
+```
+
+Existem várias formas de se criar um componente, uma interessante é usando const da forma acima.
+
+Um erro será exibido no `({user})`, pois ele não tem uma definição de tipos. 
+
+**Como fazer a definição de tipos do componente:**
+
+O React já tem sua tipagem e disponibiliza `React.FC` que significa React Functional Component.
+
+Setando o componente como um React.FC:
+
+```ts
+import React from 'react'; // O FC vem do React
+
+const User: React.FC = ({ user }) => {
+
+  return (
+    <div>
+        <strong>Nome: </strong>{ user.name }<br />
+        <strong>Email: </strong>{ user.email }<br /><br />
+    </div>
+  );
+}
+
+export default User;
+```
+
+**Como fazer a definição de tipos das propriedades:**
+
+O `React.FC` pode receber como parametro de tipagem as propriedades, ficando algo assim: `React.FC<Props>`
+
+Isso significa que as propriedades serão: todas as que a gente definir + as que vem por padrão.
+
+Defininfo o tipo da propriedade user:
+
+```ts
+import React from 'react';
+
+//Defininfo a tipagem do objeto
+interface IUser {
+  name: string;
+  email: string;
+}
+
+//Definindo a tipagem das propriedades 
+interface IProps {
+  user: IUser;
+  //poderia ser colocados mais propriedades personalizadas aqui.
+}
+
+// Passando o como parametro de tipagem o IProps
+const User: React.FC<IProps> = ({ user }) => {
+
+  return (
+    <div>
+        <strong>Nome: </strong>{ user.name }<br />
+        <strong>Email: </strong>{ user.email }<br /><br />
+    </div>
+  );
+}
+```
+
+
+
