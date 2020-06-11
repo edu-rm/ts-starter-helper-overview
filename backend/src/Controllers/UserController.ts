@@ -12,10 +12,10 @@ export default {
     async create(req: Request, res: Response){
         const emailService = new EmailService();
 
-        emailService.sendMail(
-            { name:'Eduardo', email: 'edu@edu.com' },
-            { subject: 'Seja Bem Vindo!', body: 'Bem vindo ao sistema'}
-        );
+        emailService.sendMail({
+            to: { name:'Eduardo', email: 'edu@edu.com' },
+            message: { subject: 'Seja Bem Vindo!', body: 'Bem vindo ao sistema'}
+        });
         return res.json({ msg: 'Usuário criado'});
     }
 };

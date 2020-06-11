@@ -221,8 +221,10 @@ class EmailService {
 ```
 
 Quando o tipo é um array é possível escrever das duas formas: 
-    - ```ts attachement? : Array<string>; ```
-    - ```ts attachement? : string[]; ```
+ 
+`attachement? : Array<string>; `
+
+`attachement? : string[]; `
 
 **Utilizando a classe EmailService em um controller qualquer:**
 
@@ -232,7 +234,7 @@ import EmailService from '../services/EmailService';
 
 export default {
     async create(req: Request, res: Response){
-        
+
         // Instanciando um objeto da classe EmailService
         const emailService = new EmailService();
 
@@ -246,4 +248,95 @@ export default {
 }
 ```
 
+**DTO**
+
+O código acima está correto e funcinal, mas vamos supor que essa seja uma função mais complexa e tenha passado anos que você a criou.
+
+Exemplo: será difícil saber visualmente do que se trata os parâmetros `{ name:'Eduardo', email: 'edu@edu.com' }` e `{ subject: 'Seja Bem Vindo!', body: 'Bem vindo ao sistema'}`, um é a mensagem e o outro é o remetente? Qual é o remetente ? Qual a mensagem?
+
+Para isso podemos criar um DTO (Data Transfer Object), é um conceito bastante utilizado da metodologia DDD, serve basicamente para setar a forma visual de como os dados "trafegam" dentro da nossa aplicação.
+
+```ts
+    interface IMailTo {
+    name: string;
+    email: string;
+}
+
+interface IMailMessage {
+    subject: string;
+    body: string;
+    attachement? : Array<string>;
+    // attachement? : string[];
+}
+
+interface IMessageDTO {
+    to: IMailTo;
+    message: IMailMessage;
+}
+
+class EmailService {
+    sendMail({ to , message }: IMessageDTO ){
+        console.log(`Email enviado para ${to.name}: ${message.subject}`);
+    }
+}
+
+export default EmailService;
+```
+
+Com isso a forma como o método será chamado muda:
+
+```ts
+export default {
+ async create(req: Request, res: Response){
+        const emailService = new EmailService();
+
+        emailService.sendMail({
+            to: { 
+                name:'Eduardo', 
+                email: 'edu@edu.com' 
+            },
+            message: { 
+                subject: 'Seja Bem Vindo!', 
+                body: 'Bem vindo ao sistema'
+            }
+        });
+        return res.json({ msg: 'Usuário criado'});
+    }
+}
+```
+
+Agora perceba como o envio de parâmetros ficou mais visual, só de "bater o olho" ja é possível saber o que está sendo enviado de uma forma bastante precisa.
+
+**Interface para classes**
+
+Também é possível criar interfaces para uma classe inteira, especificando seus atributos e funções, veja abaixo.
+
+```ts
+interface IMailTo {
+    name: string;
+    email: string;
+}
+
+interface IMailMessage {
+    subject: string;
+    body: string;
+    attachement? : Array<string>;
+    // attachement? : string[];
+}
+
+interface IEmailService {
+    // Especificando a existencia de uma função que recebe um 
+    // request do tipo IMessageDTO e que retorna void
+    sendMail(request : IMessageDTO) : void;
+}
+
+// Implementando a interface criada na classe.
+
+class EmailService implements IEmailService {
+    sendMail({ to , message }: IMessageDTO ){
+        console.log(`Email enviado para ${to.name}: ${message.subject}`);
+    }
+}
+
+```
 
