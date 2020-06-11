@@ -6,6 +6,15 @@
 
 Esse repositório é composto pela aplicação criada no MasterClass 07 da rocketseat, além de anotações úteis sintetizadas e descomplicadas, que facilitam a revisão para a absorção integral do conhecimento.
 
+## Índice
+
+1.[Introdução](#introdução)
+2.[Backend](#backend)
+3.[Fontend](#frontend)
+4.
+5.
+6.
+
 ## Introdução
 
 TypeScript é uma linguagem somente quando capaz de ser executado por um compilador. Antes da criação do Deno ele era simplesmente transpilado pra JS.
@@ -414,7 +423,7 @@ Quando é feita uma requisição GET na rota /users o retorno dela será um **Ar
 ]
 ```
 
-Quando a requisição na api é feita e ocorre o retorno dos dados, necessita-se dizer pro axios qual é o formato desse retorno, da resposta. E parra isso podemos criar uma interface.
+Quando a requisição na api é feita e ocorre o retorno dos dados, necessita-se dizer pro axios qual é o formato desse retorno. E para isso podemos criar uma interface.
 
 ```tsx 
 interface IUser {
@@ -434,7 +443,7 @@ api.get<IUser[]>('/users').then((response) => {
 
 Passamos ela após a chamada do método get, e além disso colocamos **[]** pra indicar que a resposta será um array. Pois como foi dito: a interface criada representa **um** único dado que virá da resposta, mas sabemos que a resposta será um array com vários deles.
 
-Ótimo, mas mesmo assim um erro será mostrado na `setUsers(response.data)`. Isso acontece pois o useState foi setado como um array normal, e sabemos que além de ser um array ele vai possuir objetos com nome e email (idêntico ao conteúdo da resposta da api, afinal é ele quem vai salva-lo)
+Ótimo, mas mesmo assim um erro será mostrado na `setUsers(response.data)`. Isso acontece pois o useState foi setado como um array normal, e sabemos que além de ser um array ele vai possuir objetos com **nome** e **email** (idêntico ao conteúdo da resposta da api, afinal é ele quem vai salva-la)
 
 ```tsx
 //
@@ -523,12 +532,12 @@ O `React.FC` pode receber como parametro de tipagem as propriedades, ficando alg
 
 Isso significa que as propriedades serão: todas as que a gente definir + as que vem por padrão.
 
-Defininfo o tipo da propriedade user:
+Definindo o tipo da propriedade user:
 
 ```ts
 import React from 'react';
 
-//Defininfo a tipagem do objeto
+//Definindo a tipagem do objeto
 interface IUser {
   name: string;
   email: string;
