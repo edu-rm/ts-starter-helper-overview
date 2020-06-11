@@ -53,19 +53,19 @@ Um dos motivos da fama do TS era justamente porque ele permitia o uso de feature
 
 Quando utilizamos o TS, as bibliotecas precisam expor suas tipagens, são elas que permitem que o Autocomplemento da IDE (IntelliSense no caso do VSCode) traga uma lista de métodos e variáveis.
 
-**Tipagens conceito:**
-
-Todas as funções e seus retornos, os parametros que recebem...
+**Tipagens conceito:** São todas as funções e seus retornos, os parametros que recebem, etc.
 
 **Alternativas de exposição de tipagens:**
 
-1. Colocando-as juntas da própria biblioteca.
+1. Colocando-as juntas com própria biblioteca.
     - Bastando eu importar a biblioteca tudo já estaria disponível.
 
 2. Ter um pacote para a funcionalidade e outro só com a tipagem (@types).
     - A maioria utilizam essa maneira.
 
 **npm install @types/express -D | yarn add -D @types/express**
+
+Instalando o @types do express, pois ele utiliza a segunda maneira.
 
 **No VSCode, por que quando instalamos uma biblioteca e utilizamos o JavaScript tradicional, o IntelliSense me trás todas as funcionalidades sem usar o Typescript?**
 
@@ -96,7 +96,7 @@ Basta executar **node src/index.js** que o servidor funcionará.
 Cria o arquivo de configuração do TS 
 - tsconfig.json
 
-Nesse arquivo uma das configurações é **"esModuleInterop": true**, ativando a possibilidade de uso do export default e do import na maneira "padrão" ( import express from 'express').
+Nesse arquivo uma das configurações é **"esModuleInterop": true**, permitindo a possibilidade de uso do export default e do import na maneira "padrão" ( import express from 'express').
 
 **npx tsc | yarn tsc**
 
@@ -114,13 +114,13 @@ Sugestões:
 ```
 ### Compilação em tempo real
 
-Existem muitas maneiras, no Node padrão a gente usa o Nodemon
+Existem muitas maneiras, no Node padrão usamos o Nodemon
 
 Sucrase? É uma ótima alternativa, porém não entende uma das funcionalidades que vem crescendo bastante no TypeScript, os **Decorators**.
 
 **Decorators**: Permite a alteração do funcionamento de uma classe, função ou variável utilizando uma sintaxe diferente.
 
-É bastante utilizado com ORMs feitos para o TS, como por exemplo o **TypeORM**.
+Eles são bastante utilizados com ORMs feitos para o TS, como por exemplo o **TypeORM**.
 
 **ts-node-dev**: usaremos para o real time reload.
 
@@ -134,24 +134,22 @@ Sucrase? É uma ótima alternativa, porém não entende uma das funcionalidades 
 },
 ```
 
-- transpileOnly: não procura por erros no código TS, ela faz com que o ts-node-dev apenas transpile.
+- transpileOnly: ela faz com que o ts-node-dev apenas transpile e não procure por erros no código TS,.
 - respawn: reinicia a cada alteração.
 
 **npm run dev:server | yarn dev:server**
 
 ### TypeScript da forma prática
 
-**Toda váriavel criada com TS precisa ter um tipo específico?** 
+**Toda váriavel criada com TS precisa ter um tipo específico?** Sim.
 
-Sim.
+**Eu preciso informar o tipo toda vez?** Não.
 
-**Eu preciso informar o tipo toda vez?**
+- **Inferência de tipos**: capacidade do TS determinar de forma automática o tipo de variáveis e retorno de funções.
 
-- **Inferência de tipos**: capacidade do TS determinar de forma automática o tipo variáveis e retorno de funções.
+**Todas as vezes que utilizarmos funcionalidades de uma determinada biblioteca em um arquivo separado:**: será necessário importar os types dessa biblioteca, mais precisamente os tipos que correspondem com o que está sendo usando dela.
 
-**Todas as vezes que eu utilizar funcionalidades de uma determinada biblioteca em um arquivo separado:**: Vou precisar importar os types dessa biblioteca, mais precisamente os tipos que correspondem com o que eu estou usando dela.
-
-Exemplo:
+**Exemplo:**
 
 UserController -> método index.
 
@@ -188,7 +186,7 @@ class EmailService {
 ```
 
 **to**: será um objeto que tem "nome" e "email"
-    - **Para objetos**: utilizamos uma Interface. Ela serve para criar uma estrutura de subtipos.
+- **Para objetos**: utilizamos uma Interface. Ela serve para criar uma estrutura de subtipos.
 
 ```ts
 interface IMailTo {
@@ -204,7 +202,7 @@ class EmailService {
 ```
 
 **message**: um objeto que possui "subject", "body" e "attachment".
-    - **Attachment**: será opcional, então é colocado um **?**, e além disso será um array, pois pode haver vários anexos:
+- **attachment**: será opcional, então é colocado um **?**, e além disso será um array, pois pode haver vários anexos:
 
 ```ts
 interface IMailMessage {
@@ -220,7 +218,7 @@ class EmailService {
 }
 ```
 
-Quando o tipo é um array é possível escrever das duas formas: 
+Quando o tipo de um atributo ou variável é um array, pode-se escrever de duas formas: 
  
 `attachement? : Array<string>; `
 
@@ -252,9 +250,9 @@ export default {
 
 O código acima está correto e funcinal, mas vamos supor que essa seja uma função mais complexa e tenha passado anos que você a criou.
 
-Exemplo: será difícil saber visualmente do que se trata os parâmetros `{ name:'Eduardo', email: 'edu@edu.com' }` e `{ subject: 'Seja Bem Vindo!', body: 'Bem vindo ao sistema'}`, um é a mensagem e o outro é o remetente? Qual é o remetente ? Qual a mensagem?
+Será difícil saber visualmente do que se trata os parâmetros `{ name:'Eduardo', email: 'edu@edu.com' }` e `{ subject: 'Seja Bem Vindo!', body: 'Bem vindo ao sistema'}`, um é a mensagem e o outro é o remetente? Qual é o remetente ? Qual a mensagem?
 
-Para isso podemos criar um DTO (Data Transfer Object), é um conceito bastante utilizado da metodologia DDD, serve basicamente para setar a forma visual de como os dados "trafegam" dentro da nossa aplicação.
+Para isso podemos criar um DTO (Data Transfer Object), é um conceito bastante utilizado da metodologia DDD, serve basicamente para setar a forma visual de como os dados "trafegam" dentro da nossa aplicação, vamos ver na prática:
 
 ```ts
     interface IMailTo {
@@ -269,12 +267,16 @@ interface IMailMessage {
     // attachement? : string[];
 }
 
+// Essa Interface  possui como conteúdo to e message 
 interface IMessageDTO {
     to: IMailTo;
     message: IMailMessage;
 }
 
 class EmailService {
+    // Faz-se a desestruturação do objeto que será mandado e coloca como tipo a interface.
+
+    // Forma de se ler: as propriedades to e message do objeto envidado tem que se adequar à interface IMessageDTO
     sendMail({ to , message }: IMessageDTO ){
         console.log(`Email enviado para ${to.name}: ${message.subject}`);
     }
@@ -283,12 +285,15 @@ class EmailService {
 export default EmailService;
 ```
 
-Com isso a forma como o método será chamado muda:
+Com isso a forma como os parâmetros serão passados muda:
 
 ```ts
 export default {
  async create(req: Request, res: Response){
         const emailService = new EmailService();
+        
+        // Na função desestruturamos um objeto e pegamos o to e message.
+        // Abaixo estamos passando um objeto com os parâmetros to e message, atendendo exatamente o que a função pede.
 
         emailService.sendMail({
             to: { 
@@ -324,15 +329,19 @@ interface IMailMessage {
     // attachement? : string[];
 }
 
+// Criando uma interface para a classe.
 interface IEmailService {
-    // Especificando a existencia de uma função que recebe um 
-    // request do tipo IMessageDTO e que retorna void
+    // Especificando a existencia de uma função que recebe um request do tipo IMessageDTO e que retorna void
     sendMail(request : IMessageDTO) : void;
 }
 
 // Implementando a interface criada na classe.
-
 class EmailService implements IEmailService {
+
+    // Criando a função baseando-se na IEmailService
+
+    // Equivalências:
+    // {to, message} = request
     sendMail({ to , message }: IMessageDTO ){
         console.log(`Email enviado para ${to.name}: ${message.subject}`);
     }
