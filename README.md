@@ -349,3 +349,10 @@ class EmailService implements IEmailService {
 
 ```
 
+## Fontend
+
+**npx create-react-app frontend --template=typescript | yarn create react-app frontend --template=typescript**
+
+Há dois tipos de extensões: ts e tsx
+- ts : arquivos que não utilizam sinaxe XML.
+- tsx : componente react, arquivos que utilizam sintaxe XML.
