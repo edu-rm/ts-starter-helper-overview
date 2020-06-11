@@ -8,12 +8,10 @@ Esse repositório é composto pela aplicação criada no MasterClass 07 da rocke
 
 ## Índice
 
-1.[Introdução](#introdução)
-2.[Backend](#backend)
-3.[Fontend](#frontend)
-4.
-5.
-6.
+- [Introdução](#introdução)
+- [Backend](#backend)
+- [Fontend](#frontend)
+
 
 ## Introdução
 
@@ -358,7 +356,7 @@ class EmailService implements IEmailService {
 
 ```
 
-## Fontend
+## Frontend
 
 **npx create-react-app frontend --template=typescript | yarn create react-app frontend --template=typescript**
 
