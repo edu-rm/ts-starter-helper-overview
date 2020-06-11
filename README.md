@@ -9,8 +9,32 @@ Esse repositório é composto pela aplicação criada no MasterClass 07 da rocke
 ## Índice
 
 - [Introdução](#introdução)
+  - Recomendações de uso.
+  - Exemplos de tipagens
+  - Por que usar TS?
 - [Backend](#backend)
+  - [Instalação](#instalação)
+    - Conceito de tipagens.
+    - As 2 alternativas de exposição de tipagem.
+    - Comportamento do VSCode
+  - [Configurações do TypeScript](#configurações-do-typescript)
+  - [Compilação em tempo real](#compilação-em-tempo-real)
+    - Decorators
+    - ts-node-dev
+  - [TypeScript da forma prática](#typescript-da-forma-prática)
+    - Preciso informar as tipagens?
+    - Inferência de tipos
+  - [Definindo tipos](#definindo-tipos)
+    - Objetos
+    - DTO (Data Transfer Object)
+    - Interface para classes.
 - [Fontend](#frontend)
+  - [TypeScript e Axios](#typescript-e-axios)
+  - [TypeScript e Componentização](#typescript-e-componentização)
+    - Como fazer a definição de tipos do componente
+    - Como fazer a definição de tipos das propriedades do componente
+
+
 
 
 ## Introdução
@@ -45,7 +69,7 @@ Então os ganhos de se usar TS vem no processo de desenvolvimento. Conseguimos i
 
 ## Backend
 
-### Instalação.
+### Instalação
 
 **npm install typescript -D | yarn add -D typescript**
 
@@ -180,7 +204,7 @@ export default {
 ```
 Feito isso você terá acesso a todas as funções e variáveis do Request e Response no seu IntelliSense
 
-### Definido tipos
+### Definindo tipos
 
 Supondo que precisamos enviar um email, função:
 
@@ -262,7 +286,7 @@ Será difícil saber visualmente do que se trata os parâmetros `{ name:'Eduardo
 Para isso podemos criar um DTO (Data Transfer Object), é um conceito bastante utilizado da metodologia DDD, serve basicamente para setar a forma visual de como os dados "trafegam" dentro da nossa aplicação, vamos ver na prática:
 
 ```ts
-    interface IMailTo {
+interface IMailTo {
     name: string;
     email: string;
 }
@@ -364,7 +388,7 @@ Há dois tipos de extensões: ts e tsx
 - ts : arquivos que não utilizam sinaxe XML.
 - tsx : componente react, arquivos que utilizam sintaxe XML.
 
-### TypeScript e Axios.
+### TypeScript e Axios
 
 Não é necessário baixar o @types do axios pois já vem junto com ele.
 
@@ -476,7 +500,7 @@ function App() {
 export default App;
 ```
 
-### TypeScript e Componentização.
+### TypeScript e Componentização
 
 Criando um componente que exibirá o nome e email :
 
