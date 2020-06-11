@@ -375,7 +375,7 @@ export default api;
 
 **App.tsx**
 
-```ts
+```tsx
 import React, { useEffect, useState } from 'react';
 
 import api from './services/api';
@@ -416,7 +416,7 @@ Quando é feita uma requisição GET na rota /users o retorno dela será um **Ar
 
 Quando a requisição na api é feita e ocorre o retorno dos dados, necessita-se dizer pro axios qual é o formato desse retorno, da resposta. E parra isso podemos criar uma interface.
 
-```ts 
+```tsx 
 interface IUser {
   name: string;
   email: string;
@@ -436,7 +436,7 @@ Passamos ela após a chamada do método get, e além disso colocamos **[]** pra 
 
 Ótimo, mas mesmo assim um erro será mostrado na `setUsers(response.data)`. Isso acontece pois o useState foi setado como um array normal, e sabemos que além de ser um array ele vai possuir objetos com nome e email (idêntico ao conteúdo da resposta da api, afinal é ele quem vai salva-lo)
 
-```ts
+```tsx
 //
 import React, { useEffect, useState } from 'react';
 
@@ -475,7 +475,7 @@ Criando um componente que exibirá o nome e email :
 
 **components/User.tsx**
 
-```ts
+```tsx
 import React from 'react';
 
 const User = ({ user }) => { //erro
