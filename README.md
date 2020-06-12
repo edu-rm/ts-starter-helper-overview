@@ -1,41 +1,28 @@
 # Rocketseat: MasterClass-07 TypeScript, o início, de forma prática
+
 ![TS](https://i1.wp.com/storage.googleapis.com/blog-images-backup/1*D8Wwwce8wS3auLAiM3BQKA.jpeg)
 
 [Link do vídeo](https://www.youtube.com/watch?v=0mYq5LrQN1s)
+
 ## Anotações
 
 Esse repositório é composto pela aplicação criada no MasterClass 07 da rocketseat, além de anotações úteis sintetizadas e descomplicadas, que facilitam a revisão para a absorção integral do conhecimento.
 
 ## Índice
 
-- [Introdução](#introdução)
-  - Recomendações de uso.
-  - Exemplos de tipagens
-  - Por que usar TS?
-- [Backend](#backend)
-  - [Instalação](#instalação)
-    - Conceito de tipagens.
-    - As 2 alternativas de exposição de tipagem.
-    - Comportamento do VSCode
-  - [Configurações do TypeScript](#configurações-do-typescript)
-  - [Compilação em tempo real](#compilação-em-tempo-real)
-    - Decorators
-    - ts-node-dev
-  - [TypeScript da forma prática](#typescript-da-forma-prática)
-    - Preciso informar as tipagens?
-    - Inferência de tipos
-  - [Definindo tipos](#definindo-tipos)
-    - Objetos
-    - DTO (Data Transfer Object)
-    - Interface para classes.
-- [Fontend](#frontend)
-  - [TypeScript e Axios](#typescript-e-axios)
-  - [TypeScript e Componentização](#typescript-e-componentização)
-    - Como fazer a definição de tipos do componente
-    - Como fazer a definição de tipos das propriedades do componente
-
-
-
+- [Rocketseat: MasterClass-07 TypeScript, o início, de forma prática](#rocketseat-masterclass-07-typescript-o-início-de-forma-prática)
+  - [Anotações](#anotações)
+  - [Índice](#índice)
+  - [Introdução](#introdução)
+  - [Back-end](#back-end)
+    - [Instalação](#instalação)
+    - [Configurações do TypeScript](#configurações-do-typescript)
+    - [Compilação em tempo real](#compilação-em-tempo-real)
+    - [TypeScript da forma prática](#typescript-da-forma-prática)
+    - [Definindo tipos](#definindo-tipos)
+  - [Front-end](#front-end)
+    - [TypeScript e Axios](#typescript-e-axios)
+    - [TypeScript e Componentização](#typescript-e-componentização)
 
 ## Introdução
 
@@ -43,7 +30,7 @@ TypeScript é uma linguagem somente quando capaz de ser executado por um compila
 
 Deno: um projeto startup que compila diretamente o typescript (entende o typescript).
 
-Antes do Deno o TS era apenas um conjunto de funcionalidades que davam mais poder ao JavaScript. 
+Antes do Deno o TS era apenas um conjunto de funcionalidades que davam mais poder ao JavaScript.
 
 Com o TS conseguimos adicionar tipagem dentro do JS.
 Se ele nos ajuda ou não depende, do time, tempo, escala...
@@ -66,8 +53,7 @@ Pelo fato do TS ser transpilado, ele não tem um resultado de nenhuma espécie e
 
 Então os ganhos de se usar TS vem no processo de desenvolvimento. Conseguimos integrar a IDE com o TS facilitando o processo de desenvolvimento, encontrando funções, parâmetros, retorno ...
 
-
-## Backend
+## Back-end
 
 ### Instalação
 
@@ -124,7 +110,7 @@ Basta executar **node src/index.js** que o servidor funcionará.
 
 **npx tsc --init | yarn tsc --init**
 
-Cria o arquivo de configuração do TS 
+Cria o arquivo de configuração do TS
 - tsconfig.json
 
 Nesse arquivo uma das configurações é **"esModuleInterop": true**, permitindo a possibilidade de uso do export default e do import na maneira "padrão" ( import express from 'express').
@@ -143,6 +129,7 @@ Sugestões:
 "outDir": "./dist",
 "outDir": "./build",
 ```
+
 ### Compilação em tempo real
 
 Existem muitas maneiras, no Node padrão usamos o Nodemon
@@ -249,8 +236,8 @@ class EmailService {
 }
 ```
 
-Quando o tipo de um atributo ou variável é um array, pode-se escrever de duas formas: 
- 
+Quando o tipo de um atributo ou variável é um array, pode-se escrever de duas formas:
+
 `attachement? : Array<string>; `
 
 `attachement? : string[]; `
@@ -298,7 +285,7 @@ interface IMailMessage {
     // attachement? : string[];
 }
 
-// Essa Interface  possui como conteúdo to e message 
+// Essa Interface  possui como conteúdo to e message
 interface IMessageDTO {
     to: IMailTo;
     message: IMailMessage;
@@ -322,17 +309,17 @@ Com isso a forma como os parâmetros serão passados muda:
 export default {
  async create(req: Request, res: Response){
         const emailService = new EmailService();
-        
+
         // Na função desestruturamos um objeto e pegamos o to e message.
         // Abaixo estamos passando um objeto com os parâmetros to e message, atendendo exatamente o que a função pede.
 
         emailService.sendMail({
-            to: { 
-                name:'Eduardo', 
-                email: 'edu@edu.com' 
+            to: {
+                name:'Eduardo',
+                email: 'edu@edu.com'
             },
-            message: { 
-                subject: 'Seja Bem Vindo!', 
+            message: {
+                subject: 'Seja Bem Vindo!',
                 body: 'Bem vindo ao sistema'
             }
         });
@@ -380,7 +367,7 @@ class EmailService implements IEmailService {
 
 ```
 
-## Frontend
+## Front-end
 
 **npx create-react-app frontend --template=typescript | yarn create react-app frontend --template=typescript**
 
@@ -447,7 +434,7 @@ Quando é feita uma requisição GET na rota /users o retorno dela será um **Ar
 
 Quando a requisição na api é feita e ocorre o retorno dos dados, necessita-se dizer pro axios qual é o formato desse retorno. E para isso podemos criar uma interface.
 
-```tsx 
+```tsx
 interface IUser {
   name: string;
   email: string;
@@ -457,7 +444,7 @@ interface IUser {
 A interface acima representa exatamente como/a forma que **UM** dado da requisição se apresentará.
 Como usá-la:
 
-```ts 
+```ts
 api.get<IUser[]>('/users').then((response) => {
     setUsers(response.data); // erro
 });
@@ -479,7 +466,7 @@ interface IUser {
 }
 
 function App() {
-  
+
   // Leitura: os users serão um array de IUser, e um único IUser será composto por nome e email.
   const [users, setUsers] = useState<IUser[]>([]);
 
@@ -524,7 +511,7 @@ export default User;
 
 Existem várias formas de se criar um componente, uma interessante é usando const da forma acima.
 
-Um erro será exibido no `({user})`, pois ele não tem uma definição de tipos. 
+Um erro será exibido no `({user})`, pois ele não tem uma definição de tipos.
 
 **Como fazer a definição de tipos do componente:**
 
@@ -565,7 +552,7 @@ interface IUser {
   email: string;
 }
 
-//Definindo a tipagem das propriedades 
+//Definindo a tipagem das propriedades
 interface IProps {
   user: IUser;
   //poderia ser colocados mais propriedades personalizadas aqui.
@@ -582,6 +569,3 @@ const User: React.FC<IProps> = ({ user }) => {
   );
 }
 ```
-
-
-
